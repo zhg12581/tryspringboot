@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.dao.UserDao">
+    <resultMap id="BaseResultMap" type="com.example.domin.User" >
+        <constructor>
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
+        </constructor>
+    </resultMap>
+
+
+    <select id="findAllUsers" parameterType="com.example.domin.User" resultMap="BaseResultMap">
+    select * from loginmodel where username=#{username} and password=#{password}
+  </select>
+
+
+
+    <select id="FindExistUserOrNot" parameterType="com.example.domin.User" resultType="com.example.domin.User">
+    select * from loginmodel where username=#{username}
+  </select>
+
+    <insert id="insert"  useGeneratedKeys="true" keyProperty="id">
+        insert into loginmodel(username,password)
+         values(#{username},#{password})
+    </insert>
+
+   <update id="updateUser" parameterType="com.example.domin.ChangePsw">
+       update loginmodel set password=#{newpassword}
+       where username = #{username}
+    </update>
+
+    <select id="getAllUser" resultType="com.example.domin.User" >
+        SELECT * from loginmodel;
+    </select>
+
+
+
+
+
+</mapper>
