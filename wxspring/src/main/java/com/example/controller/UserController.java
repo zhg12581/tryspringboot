@@ -1,26 +1,17 @@
 package com.example.controller;
 
-import com.example.domin.Book;
-import com.example.domin.ChangePsw;
-import com.example.domin.MyUser;
-import com.example.domin.User;
+import com.example.domin.*;
 import com.example.exception.BusinessException;
 import com.example.service.UserService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 /**
@@ -93,7 +84,6 @@ public class UserController {
 //@Param("username")String username,@Param("password")String password
     @PostMapping(value = "/user")
     public boolean user(@RequestBody User user) {
-
         String username2=user.username;
         String password2=user.password;
         System.out.println("微信小程序调用接口！！！用户名:" + username2 + "密码:" + password2);
@@ -140,6 +130,7 @@ public class UserController {
         return  "上传成功";
     }
 
+    //异常处理在exception文件中
     private String msg;
     @RequestMapping("/Exception1")
     public String Exception1() {
@@ -161,5 +152,30 @@ public class UserController {
         //return this.msg;
     }
 
+    //全局定义在config目录下的GlobalConfig类中
+    @GetMapping("/GetGlobalData")
+    public String GetGlobalData(@ModelAttribute("msg") String msg,
+                        @ModelAttribute("info") Map<String, String> info) {
+        String result = "msg：" + msg + "<br>" + "info：" + info;
+        return result;
+    }
+
+    //全局定义在config目录下的GlobalConfig类中
+    @GetMapping("/GetGlobalData2")
+    public String GetGlobalData2(Model model) {
+        Map<String, Object> map = model.asMap();
+        String msg = map.get("msg").toString();
+        Map<String, String> info = (Map<String, String>)map.get("info");
+        String result = "msg：" + msg + "<br>" + "info：" + info;
+        return result;
+    }
+
+    //请求参数预处理，避免前后端传递数据时出现参数混淆的情况，定义在config目录下的GlobalConfig类中
+    @GetMapping("/Pretreatment")
+    public String Pretreatment(@ModelAttribute("author")Author author,
+                        @ModelAttribute("book") Book2 book) {
+        return "name：" + author.getName() + " | age：" + author.getAge() + "<br>"
+                + "name：" + book.getName() + " | price：" + book.getPrice();
+    }
 
 }

@@ -14,7 +14,7 @@ import java.util.Map;
  *  * 返回string或者json需要@ResponseBody
  *  * 用RestControllerAdvice，就不用加@ResponseBody了
  **/
-
+//全局异常处理
 @RestControllerAdvice
 public class MyControllerAdvice {
     @ExceptionHandler(value = Exception.class)
